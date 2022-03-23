@@ -1,4 +1,4 @@
-from app2.views import login, signup
+from app2.views import xyz, signup, login
 """selfproject1st_python URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -19,6 +19,8 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', login),
+    path('xyz/', xyz),
     path("signup/", signup),
+
+    path("login/", login),
 ]
