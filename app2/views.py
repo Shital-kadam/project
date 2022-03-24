@@ -9,11 +9,11 @@ def xyz(request):
 # Create your views here.
 def signup(request):
     #get sign up deatails from user
-    email = request.GET['email']
-    fname = request.GET['fname']
-    lname = request.GET['lname']
-    phone = request.GET['phone']
-    psw = request.GET['psw']
+    email = request.POST['email']
+    fname = request.POST['fname']
+    lname = request.POST['lname']
+    phone = request.POST['phone']
+    psw = request.POST['psw']
 
     #connect with data base server
     cursor = connection.cursor()
@@ -22,7 +22,7 @@ def signup(request):
     cursor.fetchall()
     count = cursor.rowcount
     if count > 0:
-        data = {'email': email}
+        data = {'email': "Email Already Exit ! Please Login"}
         return render(request, "second.html", data)
 
     else:
@@ -33,29 +33,32 @@ def signup(request):
 
         cursor.execute(query, value)
 
-        data = {"fname": fname, 'lname': lname, "email": email, 'phone': phone, "password": psw}
+        data = {"fname": fname, 'lname': lname, "email": "You are Successfull login", 'phone': phone, "password": psw}
         return render(request, "first.html", data)
 
 
 
 def login(request):
     # login details fetch
-    email1 = request.GET.get('email1')
-    psw1 = request.GET.get('psw1')
+    email1 = request.POST['email1']
+    psw1 = request.POST['psw1']
 
     cursor = connection.cursor()
 
     query = "select password from signuppage where email= '"+email1+"'"
     cursor.execute(query)
     row = cursor.fetchall()
+    if len(row)==0:
+        data = {"email": 'Email Not Valid', "password": psw1}
+        return render(request, "second.html", data)
 
     password = row[0][0]
-    if psw1 == password:  #user succesfull login if psw is correct
-        data = {"email": email1, "password": psw1}
+    if psw1 == password :  #user succesfull login if psw is correct
+        data = {"email": "You Are Successfull Login", "password": psw1}
         return render(request, "first.html", data)
 
     else:
-        data = {"email": email1, "password": psw1}
+        data = {"email": "Please Forgot Password", "password": psw1}
         return render(request, "second.html", data)
 
 
